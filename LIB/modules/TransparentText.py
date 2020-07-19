@@ -114,7 +114,7 @@ class AlphaText():
             self.x_offset = number * 25 - (dotlength - 1) * 25 / 2
             self.rect = Rect((0, 674), (0, 0))
         elif self.group == 'a_little_cell_number':
-            if number in range(11)+range(20, 31):
+            if number in list(range(11))+list(range(20, 31)):
                 self.x = Globals.TEMP_VARS['cells_rects'][number].centerx - 4
             elif number in range(11, 20):
                 self.x = 383
@@ -122,12 +122,12 @@ class AlphaText():
                 self.x = 807
             if number in range(11):
                 self.rect = Rect((0, 574), (0, 0))
-            elif number in range(11, 20)+range(31, 40):
+            elif number in list(range(11, 20))+list(range(31, 40)):
                 self.rect = Rect((0, Globals.TEMP_VARS['cells_rects'][number].centery - 6), (0, 0))
             elif number in range(20, 31):
                 self.rect = Rect((0, 152), (0, 0))
         elif self.group == 'step_indicator':
-            if number in range(11)+range(20, 31):
+            if number in list(range(11))+list(range(20, 31)):
                 self.x = Globals.TEMP_VARS['cells_rects'][number].centerx - 4
             elif number in range(11, 20):
                 self.x = 283
@@ -135,7 +135,7 @@ class AlphaText():
                 self.x = 910
             if number in range(11):
                 self.rect = Rect((0, 679), (0, 0))
-            elif number in range(11, 20)+range(31, 40):
+            elif number in list(range(11, 20))+list(range(31, 40)):
                 self.rect = Rect((0, Globals.TEMP_VARS['cells_rects'][number].centery - 6), (0, 0))
             elif number in range(20, 31):
                 self.rect = Rect((0, 55), (0, 0))

@@ -2,8 +2,11 @@
 import Globals, FieldCellsData, pygame
 from GlobalFuncs import *
 from random import shuffle
-from Sprite import Line, Sprite
 from TransparentText import AlphaText
+
+from LIB.modules.GlobalFuncs import check_cur_prop_management, prop_manage_pictures, slight_animation_count_pos, \
+    count_new_pos, check_group_monopoly, read_chests_and_chances_translation
+
 
 class GameField():
     def __init__(self):
@@ -178,7 +181,7 @@ class FieldCell():
                     temp = self.rent_costs[self.buildings]
                     if monopolied_cell and not self.buildings and self.group in range(9):
                         temp = temp * 2
-                elif self.number in range(11, 20) + range(31, 40):
+                elif self.number in list(range(11, 20)) + list(range(31, 40)):
                     if self.group in (3, 4, 7, 8):
                         temp = 7*'X'
                     else:
@@ -465,7 +468,7 @@ class PropManageSummary(InfoWindow):
         y_pos = 0
         for key in ('info', 'splitter1'):
             y_pos = self.render_header(y_pos, obj, key)
-        for key in sorted(obj):
+        for key in obj.copy():
             if key in range(40):
                 y_pos = self.render_element(y_pos, obj, key)
         if len(self.text) < 6: y_pos -= 15
