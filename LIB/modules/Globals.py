@@ -10,7 +10,7 @@ pygame.display.init()
 pygame.font.init()
 pygame.mixer.init()
 # --- Game version and resolution
-VERSION = '0.8.0-dev'
+VERSION = '1.0.0'
 RESOLUTION = check_user_monitor(1200, 700)
 # --- Colors, directories, files, fonts, pictures and languages
 COLORS = {'black': pygame.Color('black'),
