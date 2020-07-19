@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import random
 from datetime import datetime
 from locale import getdefaultlocale
@@ -216,16 +217,14 @@ def check_files():
 
 def create_init_file(type):
     if type == 'stats':
-        data = ['0\n' if x < 3 else 'None 0 01.01.01 0\n' for x in range(10)]
+        data = ['0' if x < 3 else 'None 0 01.01.01 0' for x in range(10)]
         data = data + data
     elif type == 'settings':
         color = Globals.PLAYERS_COLORS[2]
         locale = getdefaultlocale()[0][:2]
         if locale not in (listdir(Globals.DIRS['translations'])):
             locale = 'en'
-        data = (
-        locale + '\n', 'Player 1\n', str(color.r) + '\n', str(color.g) + '\n', str(color.b) + '\n', '1\n', '1\n', '1\n',
-        '1\n', '1.0\n', '1\n', '1\n')
+        data = [locale, os.getlogin(), str(color.r), str(color.g), str(color.b), '1', '1', '1', '1', '1.0', '1', '1']
     elif type == 'last_game_settings':
         data = ("human\n", "AI\n")
     write_to_file(Globals.FILES[type], data)
@@ -246,18 +245,18 @@ def read_settings():
 
 
 def save_settings():
-    array = [Globals.SETTINGS['language'] + '\n',
-             Globals.SETTINGS['pl_name'] + '\n',
-             str(Globals.SETTINGS['pl_color'][0]) + '\n',
-             str(Globals.SETTINGS['pl_color'][1]) + '\n',
-             str(Globals.SETTINGS['pl_color'][2]) + '\n',
-             str(Globals.SETTINGS['fav_game']) + '\n',
-             str(int(Globals.SETTINGS['hotkeys'])) + '\n',
-             str(int(Globals.SETTINGS['music'])) + '\n',
-             str(int(Globals.SETTINGS['sounds'])) + '\n',
-             str(Globals.SETTINGS['volume']) + '\n',
-             str(int(Globals.SETTINGS['build_style'])) + '\n',
-             str(int(Globals.SETTINGS['block'])) + '\n']
+    array = [Globals.SETTINGS['language'],
+             Globals.SETTINGS['pl_name'],
+             str(Globals.SETTINGS['pl_color'][0]),
+             str(Globals.SETTINGS['pl_color'][1]),
+             str(Globals.SETTINGS['pl_color'][2]),
+             str(Globals.SETTINGS['fav_game']),
+             str(int(Globals.SETTINGS['hotkeys'])),
+             str(int(Globals.SETTINGS['music'])),
+             str(int(Globals.SETTINGS['sounds'])),
+             str(Globals.SETTINGS['volume']),
+             str(int(Globals.SETTINGS['build_style'])),
+             str(int(Globals.SETTINGS['block']))]
     write_to_file(Globals.FILES['settings'], array)
 
 
