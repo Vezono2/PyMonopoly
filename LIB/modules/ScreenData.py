@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from . import FieldCellsData, GameMechanics, Globals
-import pygame
-import random
+from sys import exit as sysexit
+
+from . import FieldCellsData, GameMechanics
 from .GameObjects import GameField, GameLog, PropManageSummary, TradeSummary
 from .GlobalFuncs import *
 from .MenuItems import AuctionPlayerHighlighter, CurTurnHighlighter, MainCursor, MenuItem
 from .Sprite import *
 from .TransparentText import AlphaText
-from sys import exit as SYSEXIT
 
 
 class MainScreen:
@@ -276,7 +275,7 @@ class MainScreen:
                         if self.menuitems[key].type[:4] != 'main' and e.key in self.menuitems[key].HOTKEYS:
                             self.action_call(key)
             elif e.type == pygame.QUIT:
-                SYSEXIT()
+                sysexit()
 
     def input_handling(self, e, KEY, max_length):
         if e.key == pygame.K_BACKSPACE:
@@ -862,8 +861,11 @@ class MainScreen:
                                                         dictkey].text.new_pos[1] - self.menuitems[
                                                                                                  dictkey].text.rect.y).topleft)
                             selector_color = 'white'
-                        self.menuitems[key].selector.items[i - 2 + tempModifier].color = Globals.COLORS[selector_color]
-                        self.menuitems[key].selector.items[i - 2 + tempModifier].RErender()
+                        try:
+                            self.menuitems[key].selector.items[i - 2 + tempModifier].color = Globals.COLORS[selector_color]
+                            self.menuitems[key].selector.items[i - 2 + tempModifier].RErender()
+                        except IndexError:
+                            pass
                     if new < old:
                         Globals.PLAYERS = Globals.PLAYERS[:new]
                         self.init_avail_colors_and_names()

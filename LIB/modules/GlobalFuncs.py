@@ -206,19 +206,19 @@ def check_files():
             create_init_file(FILE)
 
 
-def create_init_file(type):
-    if type == 'stats':
-        data = ['0' if x < 3 else 'None 0 01.01.01 0' for x in range(10)]
-        data = data + data
-    elif type == 'settings':
+def create_init_file(file):
+    data = list()
+    if file == 'stats':
+        data = ['0', '0', '0', f'Vezono 100 20.07.20 0']
+    elif file == 'settings':
         color = Globals.PLAYERS_COLORS[2]
         locale = getdefaultlocale()[0][:2]
         if locale not in (listdir(Globals.DIRS['translations'])):
             locale = 'en'
         data = [locale, os.getlogin(), str(color.r), str(color.g), str(color.b), '1', '1', '1', '1', '1.0', '1', '1']
-    elif type == 'last_game_settings':
-        data = ("human\n", "AI\n")
-    write_to_file(Globals.FILES[type], data)
+    elif file == 'last_game_settings':
+        data = ("human", "AI")
+    write_to_file(Globals.FILES[file], data)
 
 
 def read_settings():
