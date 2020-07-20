@@ -1,4 +1,4 @@
 LIB/modules/*.pyc
-LIB/modules/__pycache__
+data/modules/__pycache__
 settings
 *~

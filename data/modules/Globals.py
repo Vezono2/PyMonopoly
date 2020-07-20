@@ -46,13 +46,13 @@ PLAYERS_COLORS = (COLORS['light_blue'],
                   COLORS['light_brown'],
                   COLORS['yellow'])
 
-DIRS = {'LIB': 'LIB/',
+DIRS = {'data': 'data/',
         'settings': 'settings/'}
-DIRS['fonts'] = DIRS['LIB'] + 'fonts/'
-DIRS['images'] = DIRS['LIB'] + 'images/'
+DIRS['fonts'] = DIRS['data'] + 'fonts/'
+DIRS['images'] = DIRS['data'] + 'images/'
 DIRS['images_etc'] = DIRS['images'] + 'etc/'
-DIRS['sounds'] = DIRS['LIB'] + 'sounds/'
-DIRS['translations'] = DIRS['LIB'] + 'translations/'
+DIRS['sounds'] = DIRS['data'] + 'sounds/'
+DIRS['translations'] = DIRS['data'] + 'translations/'
 
 FILES = {'font_dejavu': DIRS['fonts'] + 'DejaVuSans.ttf',
          'font_ubuntu': DIRS['fonts'] + 'Ubuntu-M.ttf',

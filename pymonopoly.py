@@ -1,2 +1,2 @@
-from LIB.modules import *
+from data.modules import *
 Globals.main_scr.mainloop()

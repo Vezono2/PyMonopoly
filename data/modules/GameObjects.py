@@ -5,7 +5,7 @@ from .GlobalFuncs import *
 from random import shuffle
 from .TransparentText import AlphaText
 
-from LIB.modules.GlobalFuncs import check_cur_prop_management, prop_manage_pictures, slight_animation_count_pos, \
+from data.modules.GlobalFuncs import check_cur_prop_management, prop_manage_pictures, slight_animation_count_pos, \
     count_new_pos, check_group_monopoly, read_chests_and_chances_translation
 
 
