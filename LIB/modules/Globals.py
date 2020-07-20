@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import pygame
-from GlobalFuncs import change_volume, check_files, check_user_monitor, create_players_list, read_settings, \
-    read_translation, switch_sound_state
-from ScreenData import MainScreen
-from Sprite import Sprite
+from .GlobalFuncs import change_volume, check_files, create_players_list, read_settings, read_translation, \
+    switch_sound_state
+from .ScreenData import MainScreen
+from .Sprite import Sprite
 
 # --- Initialize python modules
 pygame.display.init()
@@ -11,7 +11,7 @@ pygame.font.init()
 pygame.mixer.init()
 # --- Game version and resolution
 VERSION = '1.0.0'
-RESOLUTION = check_user_monitor(1200, 700)
+RESOLUTION = (1200, 700)
 # --- Colors, directories, files, fonts, pictures and languages
 COLORS = {'black': pygame.Color('black'),
           'brown45': pygame.Color(140, 77, 60),
@@ -88,6 +88,7 @@ TEMP_VARS = {}
 check_files()
 SETTINGS = read_settings()
 TRANSLATION = read_translation(SETTINGS['language'])
+PLAYERS = list()
 create_players_list()
 # --- Create main window
 pygame.display.set_icon(pygame.image.load(PICS['appicon']))

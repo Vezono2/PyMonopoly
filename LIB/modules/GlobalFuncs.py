@@ -6,8 +6,8 @@ from locale import getdefaultlocale
 from os import listdir, mkdir
 from sys import exit as SYSEXIT
 
-import Globals
-from Players import Player
+from . import Globals
+from .Players import Player
 from pygame import Color, display, mixer
 
 
@@ -194,21 +194,12 @@ def count_player_funds(player):
     return PROP
 
 
-# --- Hardware related
-def check_user_monitor(x, y):
-    if display.Info().current_w - 70 < x or display.Info().current_h - 60 < y:
-        print("Your monitor has too small resolution! We can't provide a good interface for it :(")
-        SYSEXIT()
-    else:
-        return (x, y)
-
-
 # --- Statistics, settings and translations
 def check_files():
     try:
         mkdir(Globals.DIRS['settings'])
     except:
-        print('config dir exists')
+        pass
     DB = listdir(Globals.DIRS['settings'])
     for FILE in ('stats', 'settings', 'last_game_settings'):
         if (FILE not in DB) or (FILE == 'settings' and not len(read_file(Globals.FILES['settings'])) == 12):
@@ -317,7 +308,6 @@ def add_one_game():
 
 
 def save_stats_to_file(cur_stats):
-    print(cur_stats)
     array = []
     for line in cur_stats:
         if isinstance(line, dict):

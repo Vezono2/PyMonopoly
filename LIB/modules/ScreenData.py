@@ -1,32 +1,30 @@
 # -*- coding: utf-8 -*-
-import FieldCellsData, GameMechanics, Globals, pygame, random
-from GameObjects import GameField, GameLog, PropManageSummary, TradeSummary
-from GlobalFuncs import *
-from MenuItems import AuctionPlayerHighlighter, CurTurnHighlighter, MainCursor, MenuItem
-from Sprite import *
-from TransparentText import AlphaText
+from . import FieldCellsData, GameMechanics, Globals
+import pygame
+import random
+from .GameObjects import GameField, GameLog, PropManageSummary, TradeSummary
+from .GlobalFuncs import *
+from .MenuItems import AuctionPlayerHighlighter, CurTurnHighlighter, MainCursor, MenuItem
+from .Sprite import *
+from .TransparentText import AlphaText
 from sys import exit as SYSEXIT
 
-from LIB.modules.GlobalFuncs import count_new_pos, check_substring_in_dict_keys, read_stats, read_file, clear_TEMP_VARS, \
-    check_bankrupt, count_player_funds, check_cur_prop_management, find_player_obj_by_name, \
-    check_if_player_owns_fieldcells, check_if_anybody_can_trade, write_stats, add_one_game, read_gamelog_translation, \
-    add_new_player, check_if_player_can_trade, rm_player, read_onboard_text, create_players_list
-from LIB.modules.Sprite import Line
 
-
-class MainScreen():
+class MainScreen:
     # --- Common
     def __init__(self):
+        self.pics = dict()
+        self.labels = dict()
         self.switch_screen('main_main', None)
 
-    def switch_screen(self, type, key):
+    def switch_screen(self, screen, key):
         # self.DEBUGGER_show_TEMP_VARS_keys()
-        if type in ('main_new_game', 'main_settings', 'main_stats') and 'gamebackground' in self.pics.keys():
+        if screen in ('main_new_game', 'main_settings', 'main_stats') and 'gamebackground' in self.pics.keys():
             self.pics.pop('gamebackground')
             self.pics['order'].remove('gamebackground')
             self.objects = {}
             create_players_list()
-        if type == 'main_main':
+        if screen == 'main_main':
             if key != 'exit':
                 self.pics = {
                     'background': Sprite(((Globals.RESOLUTION[0] - 1820) / 2, -130), Globals.PICS['background'], 50),
@@ -34,7 +32,7 @@ class MainScreen():
                     'order': ['background', 'logo']}
                 self.labels = {'APPNAME': AlphaText('PyMonopoly', 'APPNAME'),
                                'APPVERSION': AlphaText(Globals.TRANSLATION[4] + Globals.VERSION, 'APPVERSION'),
-                               'resources': AlphaText('Thanks to: freemusicarchive.org, openclipart.org', 'authors', 0),
+                               'resources': AlphaText('Reborn by Vezono, 2020', 'authors', 0),
                                'authors': AlphaText('Anthony Samartsev & Michael Mozhaev, 2014-2017', 'authors', 1)}
                 self.objects = {}
             else:
@@ -88,42 +86,42 @@ class MainScreen():
                               'stats': MenuItem(Globals.TRANSLATION[2], 'main_stats', 'main_main', 2),
                               'exit': MenuItem(Globals.TRANSLATION[3], 'main_sysexit', 'main_main', 3)}
             self.cursor = MainCursor(self.menuitems, 'main_main')
-        elif type == 'main_stats':
+        elif screen == 'main_stats':
             self.move_APPINFO((0, -50))
             self.menuitems = {'exit': MenuItem(Globals.TRANSLATION[11], 'main_main', 'main_stats')}
             if not Globals.SETTINGS['block']:
                 self.menuitems['switch'] = MenuItem(Globals.TRANSLATION[12], 'stats_switch', 'stats_switch')
             self.make_stats_screen(Globals.TRANSLATION[6 - Globals.SETTINGS['fav_game']])
-        elif type == 'main_settings':
+        elif screen == 'main_settings':
             if key != 'exit':
                 self.move_APPINFO((0, -50))
                 Globals.TEMP_VARS['edit_player'] = 0
             else:
                 self.clear_labels(('APPNAME', 'APPVERSION', 'resources', 'authors'))
             self.make_settings_screen()
-        elif 'main_new_edit_player' in type or type == 'main_settings_player':
+        elif 'main_new_edit_player' in screen or screen == 'main_settings_player':
             if key == 'exit':
                 Globals.PLAYERS[Globals.TEMP_VARS['edit_player']].name = self.labels['name_MI'].symbols
                 self.objects = {}
             self.make_playersettings_screen()
-            if 'main_new_edit_player' in type:
+            if 'main_new_edit_player' in screen:
                 self.menuitems.update(
                     {'exit': MenuItem(Globals.TRANSLATION[21], 'main_new_game', 'main_settings_player_exit')})
             else:
                 self.menuitems.update(
                     {'exit': MenuItem(Globals.TRANSLATION[21], 'main_settings', 'main_settings_player_exit')})
-        elif type == 'main_settings_player_name':
+        elif screen == 'main_settings_player_name':
             if self.menuitems['exit'].type == 'main_new_game':
-                type = 'main_new_edit_player'
+                screen = 'main_new_edit_player'
             else:
-                type = 'main_settings_player'
-            self.menuitems = {'exit': MenuItem(Globals.TRANSLATION[21], type, 'main_settings_player_exit')}
+                screen = 'main_settings_player'
+            self.menuitems = {'exit': MenuItem(Globals.TRANSLATION[21], screen, 'main_settings_player_exit')}
             self.clear_labels(('APPNAME', 'APPVERSION', 'resources', 'authors'))
             self.labels.update({'name': AlphaText(Globals.TRANSLATION[24], 'settings_left', 1),
                                 'name_MI': AlphaText(Globals.PLAYERS[Globals.TEMP_VARS['edit_player']].name,
                                                      'main_settings_player', 0)})
             self.make_obj_for_enter_name('name_MI')
-        elif type == 'main_new_game':
+        elif screen == 'main_new_game':
             self.init_avail_colors_and_names()
             if key == 'exit':
                 Globals.TEMP_VARS.pop('edit_player')
@@ -148,7 +146,7 @@ class MainScreen():
                                 'humans': AlphaText(Globals.TRANSLATION[30], 'settings_left', 2),
                                 'players': AlphaText(Globals.TRANSLATION[31], 'settings_left', 3)})
             if key == 'exit':
-                self.check_error(type)
+                self.check_error(screen)
             for i in range(len(Globals.PLAYERS)):
                 self.menuitems.update({'player' + str(i): MenuItem(Globals.PLAYERS[i].name,
                                                                    'main_new_edit_player_' + str(i),
@@ -160,7 +158,7 @@ class MainScreen():
                     u'‹ ' + Globals.TRANSLATION[5 + int(Globals.TEMP_VARS['cur_game'])] + u' ›', 'main_new_game_switch',
                     'main_settings_left_MI', -1)})
                 self.labels.update({'game': AlphaText(Globals.TRANSLATION[27], 'settings_left', -1)})
-        elif type == 'game_start':
+        elif screen == 'game_start':
             for key in ('avail_colors', 'avail_names'):
                 Globals.TEMP_VARS.pop(key)
             random.shuffle(Globals.PLAYERS)
@@ -362,9 +360,6 @@ class MainScreen():
                 self.disable_central_labels()
                 self.disable_step_indicators()
                 self.next_bankruptcy_field()
-            # for player in Globals.PLAYERS:
-            #     print(player.name)
-            # print('')
         elif not self.error_msg_money_limits(key):
             type = self.menuitems[key].action(key)
             if type in ('roll_the_dice', 'roll_the_dice_to_exit_jail'):
@@ -671,7 +666,6 @@ class MainScreen():
                         self.disable_step_indicators()
                         key = 'target_cell_trading_info'
                         if key in self.labels.keys(): self.labels.pop(key)
-                        key = 'text_cursor'
                         self.cancel_prop_manage()
                         for key in ('trading', 'property', 'prop_manage_CHANGED'):
                             if key in Globals.TEMP_VARS.keys():
@@ -1785,10 +1779,10 @@ class MainScreen():
 
     def swap_property_to_finish_trading(self):
         Globals.TEMP_VARS['RErender_groups'] = []
-        for i in range(2):
+        for properties in range(2):
             temp_keys = ('trader', 'tradingwith')
-            change_from = Globals.TEMP_VARS['trading'][temp_keys[i]]
-            change_to = Globals.TEMP_VARS['trading'][temp_keys[i - 1]]
+            change_from = Globals.TEMP_VARS['trading'][temp_keys[properties]]
+            change_to = Globals.TEMP_VARS['trading'][temp_keys[properties - 1]]
             for field in change_from['fields']:
                 cell = self.objects['gamefield'].cells[field]
                 if cell.group not in Globals.TEMP_VARS['RErender_groups']:

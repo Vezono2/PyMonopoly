@@ -1,21 +1,11 @@
-# -*- coding: utf-8 -*-
-from sys import exit as SYSEXIT
-
-import Globals
 import pygame
-from GlobalFuncs import *
-from TransparentText import AlphaText
+from .GlobalFuncs import *
+from .TransparentText import AlphaText
 
 
-# --- Menuitems
-from LIB.modules.GlobalFuncs import slight_animation_count_pos, count_new_pos, change_color_alpha, change_volume, \
-    prop_manage_pictures, choose_next_language, save_last_game_settings, switch_sound_state, save_settings, \
-    play_click_sound
-
-
-class MenuItem():
-    def __init__(self, text, type, group, number=0):
-        self.type = type
+class MenuItem:
+    def __init__(self, text, menu_item, group, number=0):
+        self.type = menu_item
         self.group = group
         self.text = AlphaText(text, group, number)
         self.make_active_zone()
@@ -206,7 +196,7 @@ class Tooltip():
                         temp = '- ' + player.name + Globals.TRANSLATION[52]
                         color = Globals.COLORS['grey22']
                     self.text.blit(font.render(temp, True, color), (0, 18 * line))
-                for i in player.free_jail_cards:
+                for _ in player.free_jail_cards:
                     jailcards.append(player)
             if jailcards:
                 for player in jailcards:
@@ -314,7 +304,6 @@ class MenuSelector():
         self.items = [AlphaText(text[i], type, i) for i in range(itemcount_start, itemcount_end)]
         self.cursor_inflate = (10, 16)
         self.rects = [pygame.Rect(item.rect.inflate(self.cursor_inflate)) for item in self.items]
-        print(self.rects)
         self.cursor = SelectorCursor(self.rects[self.active])
         if type == 'in_game_volume_SELECTOR':
             self.cursor.new_cords = self.rects[self.active].topleft
