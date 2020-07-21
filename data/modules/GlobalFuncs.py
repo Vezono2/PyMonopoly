@@ -215,7 +215,7 @@ def create_init_file(file):
         locale = getdefaultlocale()[0][:2]
         if locale not in (listdir(Globals.DIRS['translations'])):
             locale = 'en'
-        data = [locale, os.getlogin(), str(color.r), str(color.g), str(color.b), '1', '1', '1', '1', '1.0', '1', '1']
+        data = [locale, os.getlogin(), str(color.r), str(color.g), str(color.b), '0', '1', '1', '1', '1.0', '1', '1']
     elif file == 'last_game_settings':
         data = ("human", "AI")
     write_to_file(Globals.FILES[file], data)
@@ -325,7 +325,7 @@ def find_place_for_new_stats(cur_stats, new_result):
 
 
 def save_last_game_settings():
-    data = [('AI\n', 'human\n')[Globals.PLAYERS[i].human] for i in range(1, len(Globals.PLAYERS))]
+    data = [('AI', 'human')[Globals.PLAYERS[i].human] for i in range(1, len(Globals.PLAYERS))]
     write_to_file(Globals.FILES['last_game_settings'], data)
 
 

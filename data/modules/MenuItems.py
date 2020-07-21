@@ -304,9 +304,9 @@ class MenuSelector():
         self.items = [AlphaText(text[i], type, i) for i in range(itemcount_start, itemcount_end)]
         self.cursor_inflate = (10, 16)
         self.rects = [pygame.Rect(item.rect.inflate(self.cursor_inflate)) for item in self.items]
-        self.cursor = SelectorCursor(self.rects[self.active])
+        self.cursor = SelectorCursor(self.rects[0])
         if type == 'in_game_volume_SELECTOR':
-            self.cursor.new_cords = self.rects[self.active].topleft
+            self.cursor.new_cords = self.rects[0].topleft
 
     def keypress(self, KEY):
         if KEY == pygame.K_LEFT:
@@ -339,7 +339,7 @@ class MenuSelector():
         for i in range(len(self.items)):
             self.items[i].move_text()
             self.rects[i] = self.items[i].rect.inflate(self.cursor_inflate)
-        self.cursor.new_cords = self.rects[self.active].topleft
+        self.cursor.new_cords = self.rects[0].topleft
 
     def render(self, state):
         if state:
